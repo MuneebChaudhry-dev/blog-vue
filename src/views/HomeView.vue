@@ -1,5 +1,7 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import NavbarVue from '@/components/NavbarVue.vue'
+</script>
 
 <template>
-  <main><h1 class="bg-black text-white">This is Vue</h1></main>
+  <NavbarVue />
 </template>
