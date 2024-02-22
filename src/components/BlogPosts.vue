@@ -6,7 +6,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { useFetch } from '../composable/fetch'
-const { data, error } = useFetch('http://localhost:3000/posts')
+const { data, error } = useFetch(`${import.meta.env.VITE_API_URL}/posts`)
 watch(data, (newData) => {
   console.log(`x is ${newData}`)
 })
