@@ -1,6 +1,40 @@
 {
   "posts": [
-    { "id": "1", "title": "a title", "description": "Description of Post 1" },
-    { "id": "2", "title": "another title", "description": "Description of Post 2" }
+    {
+      "id": "1",
+      "title": "a title",
+      "description": "Description of Post 1",
+      "isRead": "false"
+    },
+    {
+      "id": "2",
+      "title": "another title",
+      "description": "Description of Post 2",
+      "isRead": "true"
+    },
+    {
+      "id": "560f",
+      "title": "Abc",
+      "description": "xyz",
+      "isRead": "false"
+    },
+    {
+      "id": "2330",
+      "title": "Hello",
+      "description": "Yaar",
+      "isRead": "true"
+    },
+    {
+      "id": "48b1",
+      "title": "Hello",
+      "description": "World",
+      "isRead": "false"
+    },
+    {
+      "id": "3384",
+      "title": "dwwe",
+      "description": "79804309827",
+      "isRead": "true"
+    }
   ]
 }
