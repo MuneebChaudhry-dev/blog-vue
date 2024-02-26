@@ -4,7 +4,8 @@
     <div class="flex p-2" v-for="post in postsData" :key="post.id">
       <div
         :class="{ 'bg-emerald-400': post.isRead, 'bg-blue-500': !post.isRead }"
-        class="w-1/6 rounded-l-md min-h-16 inline-flex items-center justify-center text-white font-semibold"
+        class="w-1/6 rounded-l-md min-h-16 inline-flex items-center justify-center text-white font-semibold cursor-pointer"
+        @click="togglIsRead(post.isRead, post.id)"
       >
         {{ post.isRead ? 'Already Read' : 'Mark Read' }}
       </div>
@@ -56,6 +57,24 @@ const deletePost = async (postID: string) => {
   }
 }
 
+const togglIsRead = async (isRead: boolean, postId: string) => {
+  try {
+    const postData = {
+      isRead: !isRead
+    }
+
+    const { data, error } = await useFetch(
+      `${import.meta.env.VITE_API_URL}/posts/${postId}`,
+      'PATCH',
+      postData
+    )
+
+    console.log('isRead toggled', data)
+  } catch (error) {
+    console.error('Error updating post:', error)
+  }
+}
+
 const editPost = async (postID: string) => {
   const { data, error } = await useFetch(`${import.meta.env.VITE_API_URL}/posts/${postID}`, 'GET')
   console.log('Edit', data)
@@ -63,6 +82,7 @@ const editPost = async (postID: string) => {
   blogStore.isEdit = true
   blogStore.postTitle = data.title
   blogStore.postDescription = data.description
+  blogStore.postId = postID
 }
 watchEffect(async () => {
   try {

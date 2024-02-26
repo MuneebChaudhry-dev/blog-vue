@@ -23,7 +23,7 @@
           class="px-10 py-2.5 text-sm font-bold text-center text-white bg-gradient-to-r from-emerald-400 to-blue-500 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-gradient-to-r hover:from-blue-500 hover:to-emerald-400"
           @click="submitPost"
         >
-          Post
+          {{ blogStore.isEdit ? 'Update' : 'Post' }}
         </button>
       </div>
     </div>
@@ -36,8 +36,14 @@ import { useFetch } from '../composable/fetch'
 import { useBlogStore } from '../stores/blog'
 
 const blogStore = useBlogStore()
-
-const submitPost = async () => {
+const submitPost = () => {
+  if (blogStore.isEdit) {
+    updatePost()
+  } else {
+    createNewPost()
+  }
+}
+const createNewPost = async () => {
   if (blogStore.postTitle !== '') {
     try {
       const postData = {
@@ -55,6 +61,27 @@ const submitPost = async () => {
       console.log('Post submitted successfully:', data)
     } catch (error) {
       console.error('Error submitting post:', error)
+    }
+  }
+}
+const updatePost = async () => {
+  if (blogStore.postTitle !== '') {
+    try {
+      const postData = {
+        title: blogStore.postTitle,
+        description: blogStore.postDescription,
+        isRead: false
+      }
+
+      const { data, error } = await useFetch(
+        `${import.meta.env.VITE_API_URL}/posts/${blogStore.postId}`,
+        'PATCH',
+        postData
+      )
+
+      console.log('Post updated successfully:', data)
+    } catch (error) {
+      console.error('Error updating post:', error)
     }
   }
 }
