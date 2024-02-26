@@ -17,6 +17,6 @@ export function useFetch(url: string, requestMethod: string = 'GET', bodyData: a
     .then((res) => res.json())
     .then((json) => (data.value = json))
     .catch((err) => (error.value = err))
-
+  console.log('Data', data.value)
   return { data, error }
 }

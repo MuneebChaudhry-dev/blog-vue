@@ -5,7 +5,7 @@
         <input
           class="p-2 w-full outline-none text-gray-900 bg-gray-50 rounded border border-gray-300 focus:ring-emerald-400 focus:border-emerald-400"
           type="text"
-          v-model="postTitle"
+          v-model="blogStore.postTitle"
           placeholder="Enter Your Post Title"
         />
       </div>
@@ -14,7 +14,7 @@
           rows="4"
           class="p-2.5 w-full outline-none text-gray-900 bg-gray-50 rounded border border-gray-300 focus:ring-emerald-400 focus:border-emerald-400"
           type="text"
-          v-model="postDescription"
+          v-model="blogStore.postDescription"
           placeholder="Enter Your Post Description"
         ></textarea>
       </div>
@@ -33,15 +33,17 @@
 import { ref, type Ref } from 'vue'
 import { useFetch } from '../composable/fetch'
 
-const postTitle: Ref<string> = ref('')
-const postDescription: Ref<string> = ref('')
+import { useBlogStore } from '../stores/blog'
+
+const blogStore = useBlogStore()
 
 const submitPost = async () => {
-  if (postTitle.value !== '') {
+  if (blogStore.postTitle !== '') {
     try {
       const postData = {
-        title: postTitle.value,
-        description: postDescription.value
+        title: blogStore.postTitle,
+        description: blogStore.postDescription,
+        isRead: false
       }
 
       const { data, error } = await useFetch(
