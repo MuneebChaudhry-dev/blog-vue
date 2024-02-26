@@ -80,6 +80,9 @@ const updatePost = async () => {
       )
 
       console.log('Post updated successfully:', data)
+      blogStore.isEdit = false
+      blogStore.postTitle = ''
+      blogStore.postDescription = ''
     } catch (error) {
       console.error('Error updating post:', error)
     }

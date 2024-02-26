@@ -51,6 +51,7 @@ const deletePost = async (postID: string) => {
       `${import.meta.env.VITE_API_URL}/posts/${postID}`,
       'DELETE'
     )
+    fetchPosts()
     console.log('Post Deleted successfully:', data.value, error.value)
   } catch (error) {
     console.error('Error in Deleting  post:', error)
@@ -69,7 +70,7 @@ const togglIsRead = async (isRead: boolean, postId: string) => {
       postData
     )
 
-    console.log('isRead toggled', data)
+    fetchPosts()
   } catch (error) {
     console.error('Error updating post:', error)
   }
@@ -77,24 +78,25 @@ const togglIsRead = async (isRead: boolean, postId: string) => {
 
 const editPost = async (postID: string) => {
   const { data, error } = await useFetch(`${import.meta.env.VITE_API_URL}/posts/${postID}`, 'GET')
-  console.log('Edit', data)
 
   blogStore.isEdit = true
   blogStore.postTitle = data.title
   blogStore.postDescription = data.description
   blogStore.postId = postID
 }
-watchEffect(async () => {
+
+const fetchPosts = async () => {
   try {
     const { data, error } = await useFetch(`${import.meta.env.VITE_API_URL}/posts`)
     if (data) {
       postsData.value = data
-      console.log('New Data:', postsData.value)
     }
   } catch (error) {
     console.error('Error in fetching posts:', error)
   }
-})
+}
+
+watchEffect(async () => fetchPosts())
 </script>
 
 <style></style>

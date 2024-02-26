@@ -17,6 +17,6 @@ export async function useFetch(url: string, requestMethod: string = 'GET', bodyD
     .then((res) => res.json())
     .then((json) => (data = json))
     .catch((err) => (error = err))
-  console.log('Data', data)
+
   return { data, error }
 }
