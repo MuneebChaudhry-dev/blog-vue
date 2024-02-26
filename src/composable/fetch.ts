@@ -1,8 +1,8 @@
 import { ref } from 'vue'
 
-export function useFetch(url: string, requestMethod: string = 'GET', bodyData: any = null) {
-  const data = ref(null)
-  const error = ref(null)
+export async function useFetch(url: string, requestMethod: string = 'GET', bodyData: any = null) {
+  let data = ''
+  let error = ''
 
   const requestOptions = {
     method: requestMethod,
@@ -13,10 +13,10 @@ export function useFetch(url: string, requestMethod: string = 'GET', bodyData: a
   if (bodyData !== null) {
     requestOptions.body = JSON.stringify(bodyData)
   }
-  fetch(url, requestOptions)
+  await fetch(url, requestOptions)
     .then((res) => res.json())
-    .then((json) => (data.value = json))
-    .catch((err) => (error.value = err))
-  console.log('Data', data.value)
+    .then((json) => (data = json))
+    .catch((err) => (error = err))
+  console.log('Data', data)
   return { data, error }
 }

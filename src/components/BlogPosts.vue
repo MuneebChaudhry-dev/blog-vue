@@ -1,6 +1,7 @@
 <template>
-  <section class="w-full mt-16">
-    <div class="flex p-2" v-for="post in data" :key="post.id">
+  <section class="w-full mt-16" v-if="postsData && postsData.length">
+    <!-- <pre>{{ postsData }}</pre> -->
+    <div class="flex p-2" v-for="post in postsData" :key="post.id">
       <div
         :class="{ 'bg-emerald-400': post.isRead, 'bg-blue-500': !post.isRead }"
         class="w-1/6 rounded-l-md min-h-16 inline-flex items-center justify-center text-white font-semibold"
@@ -36,12 +37,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch, watchEffect } from 'vue'
 import { useFetch } from '../composable/fetch'
 import { useBlogStore } from '@/stores/blog'
 
+const postsData = ref([])
 const blogStore = useBlogStore()
-const { data, error } = useFetch(`${import.meta.env.VITE_API_URL}/posts`)
 
 const deletePost = async (postID: string) => {
   try {
@@ -57,16 +58,22 @@ const deletePost = async (postID: string) => {
 
 const editPost = async (postID: string) => {
   const { data, error } = await useFetch(`${import.meta.env.VITE_API_URL}/posts/${postID}`, 'GET')
-  console.log('Edit', data.title)
+  console.log('Edit', data)
 
   blogStore.isEdit = true
   blogStore.postTitle = data.title
   blogStore.postDescription = data.description
 }
-
-watch(data, (newData) => {
-  const dd = JSON.stringify(newData)
-  console.log(`x is ${dd}`)
+watchEffect(async () => {
+  try {
+    const { data, error } = await useFetch(`${import.meta.env.VITE_API_URL}/posts`)
+    if (data) {
+      postsData.value = data
+      console.log('New Data:', postsData.value)
+    }
+  } catch (error) {
+    console.error('Error in fetching posts:', error)
+  }
 })
 </script>
 
